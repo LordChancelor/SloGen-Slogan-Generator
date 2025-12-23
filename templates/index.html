@@ -3,32 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SloGen AI</title>
+    <title>SloGen | AI Slogan Generator</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="main-card">
-        <div class="header">
-            <h1>SloGen 🚀</h1>
-            <p>AI-Powered Marketing Slogans</p>
-        </div>
-        
-        <div class="input-group">
-            <label>Product Name</label>
-            <input type="text" id="productInput" placeholder="e.g., UltraPhone">
-            
-            <label>Keywords (Optional)</label>
-            <input type="text" id="keywordInput" placeholder="e.g., fast, secure, cheap">
-            
-            <button onclick="generateSlogan()">Generate Slogan</button>
-        </div>
 
-        <div class="output-area">
-            <div id="loading" class="hidden">🤖 AI is thinking...</div>
-            <h2 id="resultText"></h2>
-        </div>
+    <div class="background-container">
+        <span>Creative</span><span>Viral</span><span>AI</span><span>Smart</span>
+        <span>Catchy</span><span>Brand</span><span>Identity</span><span>Marketing</span>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <div class="main-layout">
+        
+        <div class="glass-card">
+            <div class="header">
+                <h1>SloGen <i class="fa-solid fa-rocket rocket-icon"></i></h1>
+                <p>AI-Powered Brand Identity Architect</p>
+            </div>
+
+            <form id="sloganForm">
+                <div class="input-group">
+                    <label for="product_name">Product / Brand Name</label>
+                    <input type="text" id="product_name" name="product_name" placeholder="e.g. SkyHigh Rentals" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="keywords">Keywords / Vibe</label>
+                    <input type="text" id="keywords" name="keywords" placeholder="e.g. luxury, fast, affordable">
+                </div>
+
+                <button type="submit" id="generateBtn">
+                    <span id="btnText">Generate Magic (x3)</span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </button>
+            </form>
+
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <h3>Select Your Favorite:</h3>
+                <div id="slogansList" class="slogans-grid">
+                    </div>
+            </div>
+        </div>
+
+        <div class="history-panel">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> History</h3>
+            <ul id="historyList"></ul>
+            <button class="clear-history" onclick="clearHistory()">Clear History</button>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 SloGen AI Project. Powered by Qwen 1.5B.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('sloganForm');
+        const resultContainer = document.getElementById('resultContainer');
+        const slogansList = document.getElementById('slogansList');
+        const generateBtn = document.getElementById('generateBtn');
+        const btnText = document.getElementById('btnText');
+        const historyList = document.getElementById('historyList');
+
+        document.addEventListener('DOMContentLoaded', loadHistory);
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Loading State
+            btnText.innerText = "Dreaming up ideas...";
+            generateBtn.disabled = true;
+            generateBtn.style.opacity = "0.7";
+            resultContainer.style.display = 'none'; // Hide old results
+            slogansList.innerHTML = ''; // Clear old results
+
+            const product = document.getElementById('product_name').value;
+            const keywords = document.getElementById('keywords').value;
+
+            try {
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product_name: product, keywords: keywords })
+                });
+                
+                const data = await response.json();
+                
+                // Show Results (Loop through the 3 slogans)
+                resultContainer.style.display = 'block';
+                
+                data.slogans.forEach(slogan => {
+                    // Create a clickable card for each slogan
+                    const card = document.createElement('div');
+                    card.className = 'slogan-card';
+                    card.innerHTML = `
+                        <p>"${slogan}"</p>
+                        <i class="fa-regular fa-copy copy-icon"></i>
+                    `;
+                    
+                    // Click to Copy & Save to History
+                    card.onclick = () => {
+                        copyAndSave(product, slogan);
+                        card.classList.add('copied');
+                        setTimeout(() => card.classList.remove('copied'), 500);
+                    };
+
+                    slogansList.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert("AI Brain Freeze 🥶. Check console.");
+            }
+
+            btnText.innerText = "Generate Magic (x3)";
+            generateBtn.disabled = false;
+            generateBtn.style.opacity = "1";
+        });
+
+        function copyAndSave(product, slogan) {
+            navigator.clipboard.writeText(slogan);
+            addToHistory(product, slogan);
+            // Optional: Show a small toast notification here
+        }
+
+        function addToHistory(product, slogan) {
+            const entry = { product, slogan, time: new Date().toLocaleTimeString() };
+            let history = JSON.parse(localStorage.getItem('slogen_history')) || [];
+            
+            // Avoid duplicates in history
+            const exists = history.some(h => h.slogan === slogan);
+            if (!exists) {
+                history.unshift(entry);
+                if (history.length > 10) history.pop();
+                localStorage.setItem('slogen_history', JSON.stringify(history));
+                renderHistory(history);
+            }
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('slogen_history')) || [];
+            renderHistory(history);
+        }
+
+        function renderHistory(history) {
+            historyList.innerHTML = '';
+            history.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${item.product}</strong><br>"${item.slogan}"`;
+                historyList.appendChild(li);
+            });
+        }
+
+        function clearHistory() {
+            localStorage.removeItem('slogen_history');
+            renderHistory([]);
+        }
+    </script>
 </body>
 </html>
