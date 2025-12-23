@@ -21,6 +21,8 @@
 * **Model:** Qwen/Qwen2.5-1.5B-Instruct (Base) + Custom LoRA Adapters
 
 ---
+## Live Demo
+you can reach live demo at https://chancelor-slogen-demo.hf.space/
 
 ## 📦 Installation & Local Setup
 
@@ -49,4 +51,7 @@ pip install torch torchvision torchaudio --index-url [https://download.pytorch.o
 
 ### Then, install the AI, Web, and Optimization libraries
 pip install transformers flask peft accelerate datasets bitsandbytes
+
+
+
 
