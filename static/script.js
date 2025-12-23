@@ -9,7 +9,6 @@ async function generateSlogan() {
         return;
     }
 
-    // Reset UI
     resultText.innerText = "";
     loading.classList.remove('hidden');
 
