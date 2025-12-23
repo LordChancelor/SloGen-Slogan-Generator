@@ -1,51 +1,34 @@
-﻿# SloGen 🚀
-**AI-Powered Marketing Slogan Generator**
+# SloGen 🚀 - AI-Powered Marketing Slogan Generator
 
-SloGen is a web-based tool designed for marketers and small business owners. It uses a pre-trained Transformer model (DistilGPT-2) to generate creative, catchy marketing slogans based on a product name and keywords.
+**SloGen** is a locally-hosted AI web application that generates creative, professional, and catchy marketing slogans. Unlike generic text generators, SloGen is fine-tuned specifically for marketing copy, balancing creativity with strict keyword adherence.
 
 ## 🌟 Features
-* **AI-Powered Generation:** Utilizes the Hugging Face `transformers` library for natural language generation.
-* **Instant Results:** Generates slogans in real-time without refreshing the page.
-* **Responsive UI:** Clean, modern interface built with HTML5 and CSS3.
-* **REST API:** Backend powered by Flask with JSON endpoints.
+
+* **Smart AI Engine:** Powered by **Qwen2.5-1.5B-Instruct**, a state-of-the-art Small Language Model (SLM).
+* **Fine-Tuned Performance:** Custom-trained using **LoRA (Low-Rank Adaptation)** on a dataset of 300+ high-quality slogans.
+* **GPU Accelerated:** Optimized for NVIDIA GPUs (RTX 4070 tested) using mixed-precision (fp16) for blazing-fast generation.
+* **Keyword Enforcer:** Uses advanced prompting techniques to ensure user keywords are actually included in the slogan.
+* **Modern UI:** Clean, responsive web interface built with Flask and CSS.
+
+---
 
 ## 🛠️ Tech Stack
-* **Backend:** Python 3.x, Flask
-* **AI Model:** Hugging Face Transformers (`distilgpt2`)
-* **Frontend:** HTML, CSS, JavaScript (Fetch API)
-* **Version Control:** Git & GitHub
 
-## ⚙️ Installation & Setup
+* **Frontend:** HTML5, CSS3 (Modern Purple/Gradient Theme)
+* **Backend:** Python, Flask
+* **AI/ML Frameworks:** PyTorch, Hugging Face Transformers, PEFT (Parameter-Efficient Fine-Tuning)
+* **Model:** Qwen/Qwen2.5-1.5B-Instruct (Base) + Custom LoRA Adapters
 
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/LordChancelor/SloGen-Slogan-Generator.git](https://github.com/LordChancelor/SloGen-Slogan-Generator.git)
-    cd SloGen-Slogan-Generator
-    ```
+---
 
-2.  **Create a Virtual Environment**
-    ```bash
-    # Windows
-    python -m venv venv
-    .\venv\Scripts\activate
+## 📦 Installation
 
-    # Mac/Linux
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
+### Prerequisites
+* Python 3.10+
+* NVIDIA GPU (Recommended for speed, though CPU works slowly)
+* CUDA Toolkit (if using GPU)
 
-3.  **Install Dependencies**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-## 🚀 How to Run
-1.  Start the Flask server:
-    ```bash
-    python app.py
-    ```
-2.  Open your web browser and navigate to:
-    `http://127.0.0.1:5000`
-
-
-## 📂 Project Structure
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/LordChancelor/SloGen-Slogan-Generator.git](https://github.com/LordChancelor/SloGen-Slogan-Generator.git)
+cd SloGen
