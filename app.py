@@ -10,7 +10,6 @@ def home():
         product_name = data.get('product_name')
         keywords = data.get('keywords')
         
-        # This now returns a LIST of 3 strings
         slogan_list = generate_slogan(product_name, keywords)
         
         # Return the list as 'slogans'
@@ -19,4 +18,5 @@ def home():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Hugging Face Spaces specifically requires port 7860 and host 0.0.0.0
+    app.run(host='0.0.0.0', port=7860)
