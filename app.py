@@ -3,25 +3,20 @@ from ai_engine import generate_slogan
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST':
+        data = request.get_json()
+        product_name = data.get('product_name')
+        keywords = data.get('keywords')
+        
+        # This now returns a LIST of 3 strings
+        slogan_list = generate_slogan(product_name, keywords)
+        
+        # Return the list as 'slogans'
+        return jsonify({'slogans': slogan_list})
+    
     return render_template('index.html')
-
-@app.route('/api/generate', methods=['POST'])
-def generate():
-    data = request.json
-    product = data.get('product')
-    tags = data.get('keywords')
-
-    if not product:
-        return jsonify({'error': 'Product name is required'}), 400
-
-    try:
-        # Call our AI function
-        slogan = generate_slogan(product, tags)
-        return jsonify({'slogan': slogan})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
